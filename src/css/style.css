@@ -1,0 +1,76 @@
+body,html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  background-color: whitesmoke;
+  height:100%;
+}  
+
+h1 {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 3.8em;
+  top: 10px;
+}
+
+h2,h3,h4{
+  font-family: 'Helevetica', sans-serif;
+}
+
+h2.graph-title {
+  padding-left: 20px;
+}
+
+.loader {
+  position: fixed;
+  top: 33vh;
+  left: 33vw;
+  width: 10%;
+}
+.controller {
+  width:22vw;
+  position: absolute;
+  top:70vh;
+  right: 0;
+}
+
+@media (min-width: 768px){
+  blockquote {
+    padding: 4px 0 4px 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+blockquote {
+    color: #6a737d;
+    border-width: 4px;
+    padding: 4px 0 0 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+blockquote {
+    margin: 0;
+}
+
+/* FLEXBOX LAYOUT IMPLEMENTATION */
+
+.flex-container {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  -webkit-flex-direction: column; /* Safari */
+  flex-direction:         column;
+  height:100%;
+}
+
+.top-section {
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-direction: column; /* Safari */
+  flex-direction:         column;
+  display: flex;
+  height:70vh;
+  width: 50%;
+}
+
+.top-section > *{
+  text-align: center;
+}
