@@ -36,7 +36,7 @@ Start dev server at  http://localhost:3000 with
 
 Build static version for production to folder _build_.
 
-You might need to add auth headers to the requests.
+You will need to add valid auth headers to auth object at the top of App.js if your github api limit isß exceeded.
 
 ` npm run build`
 

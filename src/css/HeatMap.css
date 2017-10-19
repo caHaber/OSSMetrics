@@ -19,17 +19,6 @@
     z-index: 99;
     min-width: 120px;
 }
-  
-.tooltip-content:before {
-    background: white;
-    content: '';
-    padding: 0px;
-    transform: rotate(45deg);
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    z-index: 99;
-}
 
 .heatrects {
     rx:15;

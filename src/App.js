@@ -4,6 +4,7 @@ import Controls from './Controls';
 import Loading from './Loading';
 import crowbar from './js/svg-crowbar.js';
 import './css/style.css';
+import './css/bootstrap.min.css'
 
 
 //Headers added in get request to increase github api usage limit
@@ -12,6 +13,13 @@ const auth = {
     secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
 }
 
+const heatmap_total = (data) => {
+    return data.reduce(function(sum, value) {return sum + value[2];}, 1);
+}
+
+const bar_total = (data) => {
+    return data.reduce(function(sum, value) {return sum + value;}, 1);
+}
 
 class App extends Component{
     constructor() {
@@ -20,15 +28,19 @@ class App extends Component{
         this.state = {
             data:[],
             year_data: [],
-            owner:'pantsbuild',
+            react_data: [],
+            react_year_data: [],
+            owner:'twitter',
             searchQuery: '',
-            repo: 'pants',
+            repo: 'finagle',
             loading: true
         };
         
         this.changeRepo = this.changeRepo.bind(this);
         this.search = this.search.bind(this);
         this.searchQueryUpdate = this.searchQueryUpdate.bind(this);
+
+        this.loadReactData = this.loadReactData.bind(this);
 
         this.loadPunchCardData = this.loadPunchCardData.bind(this);
         this.loadYearData = this.loadYearData.bind(this);
@@ -37,6 +49,25 @@ class App extends Component{
     }
     componentWillMount() {
         this.loadPunchCardData();
+        this.loadReactData();
+    }
+    loadReactData(){
+        let app = this;
+
+        fetch(process.env.PUBLIC_URL + '/data/punch_card.json')
+        .then(function(response) {
+           return response.json();
+        }).then(function (action) {
+            app.setState({react_data: action});
+        });
+
+        fetch(process.env.PUBLIC_URL + '/data/participation.json')
+        .then(function(response) {
+           return response.json();
+        }).then(function (action) {
+            app.setState({react_year_data: action.all});
+        });
+       //.then(this.setLoadingFlag());
     }
     loadYearData(){
 
@@ -58,7 +89,7 @@ class App extends Component{
         let repo = (this.state.searchQuery !== '' ? this.state.searchQuery : this.state.owner + '/' + this.state.repo) ;
         let resourceType = 'stats/punch_card';
 
-        fetch('https://api.github.com/repos/' + repo + '/' + resourceType)
+        fetch('https://api.github.com/repos/' + repo + '/' + resourceType + '?client_id='+auth.id+'&client_secret='+auth.secret)
             .then(function(response) {
                return response.json();
             }).then(function (action) {
@@ -76,8 +107,7 @@ class App extends Component{
             //             name: d.full_name};
             //     });
 
-                app.setState({data: action});
-                
+                app.setState({data: action});                
             })
             .then(this.setLoadingFlag())
             .then(this.loadYearData());
@@ -93,9 +123,6 @@ class App extends Component{
         this.setState({searchQuery:event})
     }
     search(event) {
-
-        console.log("SEARCH");
-        
         let app = this;
         app.setState({loading:true});
         let p1 = new Promise(function(resolve, reject) {
@@ -134,13 +161,10 @@ class App extends Component{
             </div>);
         }
 
-        let fullWidth = window.innerWidth * .7,
-            fullHeight = window.innerHeight;
-
-        let params = {
+        const params = {
                 bins: 20,
-                width: fullWidth -150,
-                height: fullHeight - 150,
+                width: 1200,
+                height: 450,
                 leftMargin: 100,
                 topMargin: 0,
                 bottomMargin: 50,
@@ -150,36 +174,91 @@ class App extends Component{
         /**
          * Functions for computing the total amount of commits per github fetch
          */
-        const total = this.state.data.reduce(function(sum, value) {
-            return sum + value[2];
-            }, 1);    
+        const total = heatmap_total(this.state.data);
+        const react_total = heatmap_total(this.state.react_data);
 
-        const year_total = this.state.year_data.reduce(function(sum, value) {
-            return sum + value;
-            }, 1);
+        const year_total = bar_total(this.state.year_data)
+
+        const react_year_total = bar_total(this.state.react_year_data);
 
 		return (
-           <div className="App flex-container">
-                <div className="top-section flex-item">
-                    <h1 className="header"> TwitterOSS Metrics Demo </h1>
-                    <h2>University of San Francisco: CS490 Capstone Project</h2>
-            
+           <div className="App container">
+                <div className="top-section row">
+                    <div className="col-md-12 text-center">
+                        <h1 className="header"> TwitterOSS Metrics Demo </h1>
+                        <h5>University of San Francisco: CS490 Capstone Project</h5>
+                        <div className="col-md-8 col-md-offset-2 grey">
+                            <h3 className="text-center sub-title">Make informed decisions to help your open source project thrive by measuring and tracking its success.</h3>
+                        </div>
+                    </div>
+                </div>
+                <div className="middle-section row">
+                    <div className="col-md-8 col-md-offset-2 grey">                  
+                             <h1 className="importance text-center"> Why is this good?</h1>
+                             <div className="col-md-12 col-md-offset-0 list">
+                                <ul>
+                                    <li>Understand how users respond to a new feature</li>
+                                    <li>Figure out where new users come from</li>
+                                    <li>Identify, and decide whether to support, an outlier use case or functionality</li>
+                                    <li>Quantify your project’s popularity</li>
+                                    <li>Understand how your project is used</li>
+                                    <li>Raise money through sponsorships and grants</li>
+                                </ul>
+                            </div>       
+                    </div>   
+                </div>
+                <div className="middle-section row">
+                    <div className="col-md-8 col-md-offset-2 grey">                  
+                             <h1 className="importance text-center"> Metric Categories</h1>
+                             <div className="col-md-8 col-md-offset-2 list">
+                                <ol>
+                                    <li>Discovery</li>
+                                    <li>Usage</li>
+                                    <li>Retention</li>
+                                    <li>Maintainer activity</li>
+                                </ol>
+                            </div>       
+                    </div>   
                 </div>
 
-                <div className="stats flex-item">
-                    <h2 className="graph-title">  Total commit frequency {repo_string} : {total} total commits  </h2>
-                </div>
+
                 <div className="viz-section">
-                    <div className="flex-item">            
-                        <PlotComponent {...params} data={this.state.data}/>
-                    </div>
-                    {this.state.year_data.length > 0 && 
-                        <div className="flex-item">
-                        <h2 className="graph-title"> Total Commits by week for the last 52 weeks : {year_total} total commits in year</h2>
-                        <BarComponent {...params} data={this.state.year_data}/>
+                    <div className="row">
+                        <div className="col-md-12">   
+                        <PlotComponent {...params}
+                        title={'Total commit frequency '+ repo_string + ' : ' + total + ' total commits' }
+                        data={this.state.data}/>
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">   
+                        <PlotComponent {...params}
+                        title={'Total commit frequency facebook/react : ' + react_total + ' total commits' }
+                        data={this.state.react_data}/>
+                        </div>
+                    </div>
+                    <hr/><br/>
+                    {this.state.year_data.length > 0 && 
+                    <div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <BarComponent {...params}
+                                title={'Total Commits by week of ' + repo_string + ' for the last 52 weeks : ' + year_total + ' total'}
+                                data={this.state.year_data}/>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                            <BarComponent {...params}
+                            title={'Total Commits by week of facebook/react for the last 52 weeks : ' + react_year_total + ' total'}
+                            data={this.state.react_year_data}/>
+                        </div>
+                        </div>
+                    </div>
                     }
-                    <div className="controller">
+
+                </div>
+                <div className="controller">
                         <Controls
                             search={this.search}
                             searchQueryUpdate={this.searchQueryUpdate}
@@ -189,7 +268,9 @@ class App extends Component{
                             savePdf={this.savePdf}
                         />
                     </div>
-                </div>
+                <blockquote>
+                    <p>Check out our github and start contributing at <a href="https://github.com/github/opensource.guide">twitter/twitteross-metrics</a>!</p>
+                </blockquote>
                 <blockquote>
                     <p>Open Source metrics for health based on <a href="https://github.com/github/opensource.guide">github.com/github/opensource.guide</a> used under the <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a> license.</p>
                 </blockquote>

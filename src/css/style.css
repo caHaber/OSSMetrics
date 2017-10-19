@@ -1,23 +1,36 @@
+
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
 body,html {
   margin: 0;
   padding: 0;
-  font-family: 'Ubuntu', sans-serif;
-  background-color: whitesmoke;
+  font-family: 'Montserrat', sans-serif !important;
+  background-color: white;
+  color: white;
   height:100%;
 }  
 
-h1 {
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 3.8em;
-  top: 10px;
+.App{
+  color: black;
+}
+
+.header {
+  font-size: 4em;
+  padding-bottom: 20px;
+}
+
+.sub-title {
+  line-height: 1.4em;
 }
 
 h2,h3,h4{
-  font-family: 'Helevetica', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
-h2.graph-title {
-  padding-left: 20px;
+.list {
+  line-height: 2em;
+  font-size: 1.8em;
 }
 
 .loader {
@@ -27,50 +40,37 @@ h2.graph-title {
   width: 10%;
 }
 .controller {
-  width:22vw;
+  width:15vw;
   position: absolute;
-  top:70vh;
-  right: 0;
+  margin-left: 20px;
+  top:310vh;
+  left: 0;
 }
 
-@media (min-width: 768px){
-  blockquote {
-    padding: 4px 0 4px 16px;
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-}
-blockquote {
-    color: #6a737d;
-    border-width: 4px;
-    padding: 4px 0 0 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
-blockquote {
-    margin: 0;
-}
-
-/* FLEXBOX LAYOUT IMPLEMENTATION */
-
-.flex-container {
-  display: -webkit-flex; /* Safari */
-  display: flex;
-  -webkit-flex-direction: column; /* Safari */
-  flex-direction:         column;
-  height:100%;
-}
 
 .top-section {
-  display: -webkit-flex; /* Safari */
-  -webkit-flex-direction: column; /* Safari */
-  flex-direction:         column;
-  display: flex;
-  height:70vh;
-  width: 50%;
+  padding-top: 30vh;
+  height:100vh;
 }
 
-.top-section > *{
-  text-align: center;
+.middle-section {
+  height:100vh;
+  padding-bottom: 100px;
+}
+
+.viz-section {
+  margin-bottom: 200px;
+}
+
+.grey {
+  color: grey;
+}
+
+.importance {
+  margin-top: 100px;
+  font-size: 4em;
+}
+
+.frame-title {
+  font-size: 1.6em;
 }

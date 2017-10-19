@@ -12,10 +12,19 @@ const style = {
     margin: 12,
     };
 
-const pantsbuild_repos = [
+const twitter_repos = [
     'pants',
-    'intellij-pants-plugin',
-    'pex'
+    'heron',
+    'GraphJet',
+    'finagle',
+    'util',
+    'finatra',
+    'twitter-server',
+    'scoot',
+    'effectivescala',
+    'scrooge',
+    'secureheaders',
+    'algebird'
 ];
       
 const menuItems = (values) => {
@@ -45,11 +54,11 @@ class Controls extends Component{
                             }}
                     />
                     <SelectField
-                        floatingLabelText="Pantsbuild Repo:"
+                        floatingLabelText="Twitter Repo:"
                         value={this.props.repo}
                         onChange={this.props.changeRepo}
                     >
-                    {menuItems(pantsbuild_repos)}
+                    {menuItems(twitter_repos)}
                     </SelectField>
                     <RaisedButton onClick={this.props.savePdf} label="Download Visualizations" primary={true} style={style} />
                 </div>

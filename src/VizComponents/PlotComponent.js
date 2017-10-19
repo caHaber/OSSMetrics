@@ -26,8 +26,6 @@ class PlotComponent extends Component{
             .domain([min(tiles,d => d.value),max(tiles,d => d.value)])
             .range(["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]);
 
-
-
         const daysOfTheWeek = {
             6: "Saturday",
             5: "Friday",
@@ -44,16 +42,17 @@ class PlotComponent extends Component{
 
 		return (
             <ORFrame
-            size={[ 1200,400 ]}
+            size={[ this.props.width, this.props.height ]}
+            title={this.props.title}
             data={tiles}
             className={'heatMap'}
             rAccessor={() => 1}
             oAccessor={d => d.step}
-            style={d => ({ fill: (d.value === 0 ? 'whitesmoke' : heatScale(d.value)) , stroke: (d.value === 0 ? 'red' : 'white'), strokeWidth: 1 })}
+            style={d => ({ fill: (d.value === 0 ? 'whitesmoke' : heatScale(d.value)) , stroke: 'white', strokeWidth: 1 })}
             type={"bar"}
             axis={daysAxis}
-            oLabel={d => <text textAnchor="middle" transform="rotate(0) translate(0,0)">{d%12}</text>}
-            margin={{ left: 100, top: 10, bottom: 80, right: 50 }}
+            oLabel={d => <text textAnchor="middle" transform="rotate(0) translate(0,0)">{d%12 + 1}</text>}
+            margin={{ left: 100, top: 70, bottom: 0, right: 50 }}
             oPadding={0}
             canvasAreas={() => true}
             pieceClass={"heatrects"}
