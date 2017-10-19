@@ -62,7 +62,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js ; mv build docs",
+    "build": "node scripts/build.js ; mv -f build docs",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
