@@ -34,13 +34,13 @@ Start dev server at  http://localhost:3000 with
 
 ` npm start`
 
-Build static version for production to folder _build_.
+Build static version for production to folder _docs_.
 
 You will need to add valid auth headers to auth object at the top of App.js if your github api limit isß exceeded.
 
 ` npm run build`
 
-Change the homepage value in package.json to build to a absolute url if you do not want the project to be served relative to the build folder.
+Change the homepage value in package.json to build to a absolute url if you do not want the project to be served relative to the _docs_ folder.
 
 ## Contributing
 

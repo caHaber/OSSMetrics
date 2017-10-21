@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {PlotComponent,BarComponent} from './VizComponents'
+import {HeatmapComponent,BarComponent} from './VizComponents'
 import Controls from './Controls';
 import Loading from './Loading';
 import crowbar from './js/svg-crowbar.js';
@@ -117,7 +117,7 @@ class App extends Component{
         crowbar.call();
     }
     setLoadingFlag(){
-      this.setState({loading:false});
+        this.setState({loading:false});
     }
     searchQueryUpdate(event) {
         this.setState({searchQuery:event})
@@ -162,14 +162,9 @@ class App extends Component{
         }
 
         const params = {
-                bins: 20,
                 width: 1200,
-                height: 450,
-                leftMargin: 100,
-                topMargin: 0,
-                bottomMargin: 50,
-                yscaleName: "# of commits"
-            };
+                height: 450
+        };
             
         /**
          * Functions for computing the total amount of commits per github fetch
@@ -178,7 +173,6 @@ class App extends Component{
         const react_total = heatmap_total(this.state.react_data);
 
         const year_total = bar_total(this.state.year_data)
-
         const react_year_total = bar_total(this.state.react_year_data);
 
 		return (
@@ -225,14 +219,14 @@ class App extends Component{
                 <div className="viz-section">
                     <div className="row">
                         <div className="col-md-12">   
-                        <PlotComponent {...params}
+                        <HeatmapComponent {...params}
                         title={'Total commit frequency '+ repo_string + ' : ' + total + ' total commits' }
                         data={this.state.data}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-12">   
-                        <PlotComponent {...params}
+                        <HeatmapComponent {...params}
                         title={'Total commit frequency facebook/react : ' + react_total + ' total commits' }
                         data={this.state.react_data}/>
                         </div>
@@ -244,6 +238,7 @@ class App extends Component{
                             <div className="col-md-12">
                                 <BarComponent {...params}
                                 title={'Total Commits by week of ' + repo_string + ' for the last 52 weeks : ' + year_total + ' total'}
+                                yscaleName={"# of commits"}
                                 data={this.state.year_data}/>
                             </div>
                         </div>
@@ -251,6 +246,7 @@ class App extends Component{
                             <div className="col-md-12">
                             <BarComponent {...params}
                             title={'Total Commits by week of facebook/react for the last 52 weeks : ' + react_year_total + ' total'}
+                            yscaleName={"# of commits"}
                             data={this.state.react_year_data}/>
                         </div>
                         </div>

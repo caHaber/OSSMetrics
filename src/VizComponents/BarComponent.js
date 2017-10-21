@@ -1,4 +1,3 @@
-// Scatterplot
 import React, {Component} from 'react';
 import {scaleQuantize,min,max} from 'd3';
 import '../css/BarChart.css';
@@ -17,6 +16,20 @@ const tooltipFunct = (d) => {
 
 const labelAccessor = (d,i) => {
    return <text transform="rotate(45)">{i[0].renderKey %4 === 0 ? d : null}</text>
+}
+
+const config = {
+    size: [1200,300],
+    projection: 'vertical',
+    type: 'bar',
+    oAccessor: d => d.step,
+    rAccessor: d => d.value,
+    margin: { left: 100, top: 50, bottom: 50, right: 50 },
+    oPadding: 2,
+    disableContext: true,
+    hoverAnnotation: true,
+    oLabel: (d,i) => labelAccessor(d,i),
+    tooltipContent: (d) => tooltipFunct(d)
 }
 
 
@@ -44,20 +57,19 @@ class BarComponent extends Component{
 		return (
             <ORFrame
             title={this.props.title}
-            size={[ 1200,300 ]}
+            size={config.size}
             data={tiles}
             axis={axis}
-            projection={'vertical'}
+            projection={config.projection}
             style={d => ({ fill: heatScale(d.value), stroke: "white", strokeWidth: 0 })}
-            type={'bar'}
-            oAccessor={d => d.step}
-            rAccessor={d => d.value}
-            oLabel={(d,i) => labelAccessor(d,i)}
-            margin={{ left: 100, top: 50, bottom: 50, right: 50 }}
-            oPadding={2}
-            disableContext={true} 
-            hoverAnnotation={true}
-            tooltipContent={d => tooltipFunct(d)}
+            type={config.type}
+            oAccessor={config.oAccessor}
+            rAccessor={config.rAccessor}
+            oLabel={config.oLabel}
+            margin={config.margin}
+            oPadding={config.oPadding}
+            hoverAnnotation={config.hoverAnnotation}
+            tooltipContent={config.tooltipContent}
             />
 		);
 	}

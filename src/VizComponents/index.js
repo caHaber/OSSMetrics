@@ -1,4 +1,4 @@
-import PlotComponent from './PlotComponent'
+import HeatmapComponent from './HeatmapComponent'
 import BarComponent from './BarComponent'
 
-export { PlotComponent, BarComponent}
+export { HeatmapComponent, BarComponent}
