@@ -35,8 +35,8 @@ h2,h3,h4{
 
 .loader {
   position: fixed;
-  top: 33vh;
-  left: 33vw;
+  top: 45vh;
+  left: 45vw;
   width: 10%;
 }
 .controller {

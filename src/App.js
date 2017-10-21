@@ -153,12 +153,20 @@ class App extends Component{
         let repo_string = (this.state.searchQuery !== '' ? this.state.searchQuery : this.state.owner + '/' + this.state.repo) ;
 
         if (!this.state.data.length) {
-            return (<div>
-            <h2> Loading raw data from github for {repo_string} </h2>  <Loading loading={true}/>
-            <h5> *Beware that this is a prototype. If github rejects the api call because limit is exceeded or repo is mispelled, data will never load.
-                Reload the page if you think the repo was mispelled.
-            </h5>
-            </div>);
+            return (
+                <div className="App container">
+                    <div className="top-section row">
+                    <div className="col-md-12 text-center">
+                        <div>
+                        <h2> Loading raw data from github for {repo_string} </h2>  <Loading loading={true}/>
+                        <h5> *Beware that this is a prototype. If github rejects the api call because limit is exceeded or repo is mispelled, data will never load.
+                            Reload the page if you think the repo was mispelled.
+                        </h5>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            );
         }
 
         const params = {
@@ -224,16 +232,17 @@ class App extends Component{
                         data={this.state.data}/>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-md-12">   
-                        <HeatmapComponent {...params}
-                        title={'Total commit frequency facebook/react : ' + react_total + ' total commits' }
-                        data={this.state.react_data}/>
+                    {this.state.react_data > 0 && 
+                        <div className="row">
+                            <div className="col-md-12">   
+                            <HeatmapComponent {...params}
+                            title={'Total commit frequency facebook/react : ' + react_total + ' total commits' }
+                            data={this.state.react_data}/>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <hr/><br/>
                     {this.state.year_data.length > 0 && 
-                    <div>
                         <div className="row">
                             <div className="col-md-12">
                                 <BarComponent {...params}
@@ -242,16 +251,18 @@ class App extends Component{
                                 data={this.state.year_data}/>
                             </div>
                         </div>
+                    }
+                    {this.state.react_year_data.length > 0 && 
                         <div className="row">
                             <div className="col-md-12">
-                            <BarComponent {...params}
-                            title={'Total Commits by week of facebook/react for the last 52 weeks : ' + react_year_total + ' total'}
-                            yscaleName={"# of commits"}
-                            data={this.state.react_year_data}/>
+                                <BarComponent {...params}
+                                title={'Total Commits by week of facebook/react for the last 52 weeks : ' + react_year_total + ' total'}
+                                yscaleName={"# of commits"}
+                                data={this.state.react_year_data}/>
+                            </div>
                         </div>
-                        </div>
-                    </div>
                     }
+                    
 
                 </div>
                 <div className="controller">
