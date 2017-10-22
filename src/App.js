@@ -232,7 +232,7 @@ class App extends Component{
                         data={this.state.data}/>
                         </div>
                     </div>
-                    {this.state.react_data > 0 && 
+                    {this.state.react_data.length > 0 && 
                         <div className="row">
                             <div className="col-md-12">   
                             <HeatmapComponent {...params}
