@@ -3,16 +3,17 @@ import {HeatmapComponent,BarComponent} from './VizComponents'
 import Controls from './Controls';
 import Loading from './Loading';
 import crowbar from './js/svg-crowbar.js';
+import fetcher from './fetch';
 import './css/style.css';
 import './css/bootstrap.min.css'
 
-
-//Headers added in get request to increase github api usage limit
 const auth = {
     id: 'xxxxxxxxxxxxxxxxxx',
     secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
 }
 
+
+// IF you have time refactor to new util - calculations
 const heatmap_total = (data) => {
     return data.reduce(function(sum, value) {return sum + value[2];}, 1);
 }
@@ -36,22 +37,21 @@ class App extends Component{
             loading: true
         };
         
+        this.fetcher = fetcher;
+
         this.changeRepo = this.changeRepo.bind(this);
         this.search = this.search.bind(this);
         this.searchQueryUpdate = this.searchQueryUpdate.bind(this);
-
-        this.loadReactData = this.loadReactData.bind(this);
-
         this.loadPunchCardData = this.loadPunchCardData.bind(this);
         this.loadYearData = this.loadYearData.bind(this);
         this.setLoadingFlag = this.setLoadingFlag.bind(this);
         this.savePdf = this.savePdf.bind(this);
     }
-    componentWillMount() {
+    componentWillMount = () => {
         this.loadPunchCardData();
         this.loadReactData();
     }
-    loadReactData(){
+    loadReactData = () => {
         let app = this;
 
         fetch(process.env.PUBLIC_URL + '/data/punch_card.json')
@@ -64,24 +64,20 @@ class App extends Component{
         fetch(process.env.PUBLIC_URL + '/data/participation.json')
         .then(function(response) {
            return response.json();
-        }).then(function (action) {
+        })
+        .then(function (action) {
             app.setState({react_year_data: action.all});
-        });
-       //.then(this.setLoadingFlag());
+        })
+        .then(this.setLoadingFlag());
     }
     loadYearData(){
 
         let app = this;
-        let repo = (this.state.searchQuery !== '' ? this.state.searchQuery : this.state.owner + '/' + this.state.repo) ;
-        let resourceType = 'stats/participation';
-
-        fetch('https://api.github.com/repos/' + repo + '/' + resourceType + '?client_id='+auth.id+'&client_secret='+auth.secret)
-        .then(function(response) {
-           return response.json();
-        }).then(function (action) {
-            app.setState({year_data: action.all});
-        })
-        .then(this.setLoadingFlag());
+        try {
+            this.fetcher.loadYearData(app, this.state.searchQuery, this.state.owner, this.state.repo);
+        } catch (error) {
+            alert(error);
+        } 
 
     }
     loadPunchCardData(){
@@ -96,7 +92,7 @@ class App extends Component{
 
             // ####################################
             // ACCESSOR ON ENTRANCE OF API DATA --- 
-            //     Usually do specific data accessing in viz component
+            // Usually do specific data accessing in viz component
             // ####################################
             // action  =  action.items.map((d) => {
             //         return  {
@@ -105,7 +101,7 @@ class App extends Component{
             //             forks: d['forks'],
             //             id: d.html_url,
             //             name: d.full_name};
-            //     });
+            // });
 
                 app.setState({data: action});                
             })
@@ -139,7 +135,7 @@ class App extends Component{
     changeRepo(event, index, value){
         this.setState({searchQuery:''})
         let app = this;
-        app.setState({loading:true});
+        app.setState({loading:true});             
         let p1 = new Promise(function(resolve, reject) {
             window.setTimeout(
                 function() {
